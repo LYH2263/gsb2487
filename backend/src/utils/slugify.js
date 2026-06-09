@@ -1,11 +1,18 @@
 function slugify(text) {
-  return text
+  let slug = text
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')     // Replace spaces with -
-    .replace(/[^\w-]+/g, '')  // Remove all non-word chars
-    .replace(/--+/g, '-');    // Replace multiple - with single -
+    .replace(/\s+/g, '-')
+    .replace(/[^\p{L}\p{N}_-]+/gu, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  
+  if (!slug) {
+    slug = 'post-' + Date.now();
+  }
+  
+  return slug;
 }
 
 module.exports = { slugify };
