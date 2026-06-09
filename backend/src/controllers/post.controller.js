@@ -69,8 +69,10 @@ const createPost = async (req, res, next) => {
 
     const { title, content, excerpt, categoryId, published } = result.data;
     let baseSlug = slugify(title);
+    if (!baseSlug) {
+      baseSlug = `post-${Date.now()}`;
+    }
     
-    // Ensure unique slug
     let slug = baseSlug;
     let count = 1;
     while (await prisma.post.findUnique({ where: { slug } })) {
